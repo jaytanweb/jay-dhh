@@ -77,7 +77,7 @@ module.exports = {
 
   devServer: {
     port: 8000,
-    ...personalSettings.devServer,
+    ...(personalSettings ? personalSettings.devServer : {}),
   },
 
   DEV_BASEURL: 'http://simulation-env.bb.game',
