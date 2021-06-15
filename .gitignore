@@ -32,7 +32,7 @@ screenshot
 # personal
 personalSettings.js
 
-# /dist
+/dist
 /dev_dist
 .yo-rc.json
 stats.json
