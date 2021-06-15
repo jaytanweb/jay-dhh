@@ -1,7 +1,7 @@
 {
-  "name": "dingtalk_polymer_2.0",
+  "name": "jay-lab-1",
   "version": "1.0.0",
-  "description": "Dingtalk Polymer 2.0",
+  "description": "jay-lab",
   "main": "index.js",
   "scripts": {
     "start": "webpack serve --mode development",
@@ -12,7 +12,7 @@
   "keywords": [
     "design"
   ],
-  "author": "elonwu",
+  "author": "jay",
   "license": "ISC",
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
