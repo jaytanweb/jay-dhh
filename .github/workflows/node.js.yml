@@ -1,0 +1,40 @@
+name: 部署 Firebase
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: 打包
+    runs-on: ubuntu-latest
+    steps:
+      - name: 拉取
+        uses: actions/checkout@master
+      - name: 安装依赖
+        run: npm install
+      - name: 执行打包
+        run: npm run build
+      - name: 记录
+        uses: actions/upload-artifact@master
+        with:
+          name: dist
+          path: dist
+  deploy:
+    name: 部署
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: 拉取
+        uses: actions/checkout@master
+      - name: Download Artifact
+        uses: actions/download-artifact@master
+        with:
+          name: dist
+          path: dist
+      - name: Firebase 部署
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
