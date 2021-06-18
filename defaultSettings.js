@@ -1,5 +1,5 @@
 // const path = require('path');
-const personalSettings = require('./personalSettings.js');
+const personalSettings = require('./personalSettings.js' || '');
 
 module.exports = {
   title: '女神联盟',
