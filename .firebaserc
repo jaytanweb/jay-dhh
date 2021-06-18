@@ -1,4 +1,7 @@
 {
+  "projects": {
+    "default": "jay-lab-1"
+  },
   "targets": {
     "jay-lab-1": {
       "hosting": {
