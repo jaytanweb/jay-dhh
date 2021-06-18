@@ -1,6 +1,4 @@
 // const path = require('path');
-const personalSettings = require('./personalSettings.js' || '');
-
 module.exports = {
   title: '女神联盟',
 
@@ -77,7 +75,6 @@ module.exports = {
 
   devServer: {
     port: 8000,
-    ...(personalSettings ? personalSettings.devServer : {}),
   },
 
   DEV_BASEURL: 'http://simulation-env.bb.game',
