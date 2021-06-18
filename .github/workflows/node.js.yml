@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - test
 
 jobs:
   build:
@@ -13,9 +14,16 @@ jobs:
         uses: actions/checkout@master
       - name: 安装依赖
         run: npm install
-      - name: 执行打包
+
+      - name: 正式服构建
+        if: github.ref == 'refs/heads/master'
         run: npm run build
-      - name: 记录
+
+      - name: 测试服构建
+        if: github.ref == 'refs/heads/test'
+        run: npm run build:test
+
+      - name: 上传打包文件
         uses: actions/upload-artifact@master
         with:
           name: dist
@@ -27,14 +35,23 @@ jobs:
     steps:
       - name: 拉取
         uses: actions/checkout@master
-      - name: Download Artifact
+      - name: 下载打包文件
         uses: actions/download-artifact@master
         with:
           name: dist
           path: dist
-      - name: Firebase 部署
+      - name: Firebase 部署正式服
+        if: github.ref == 'refs/heads/master'
         uses: w9jds/firebase-action@master
         with:
-          args: deploy --only hosting
+          args: deploy --only hosting:master
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
+      - name: Firebase 部署测试服
+        if: github.ref == 'refs/heads/test'
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only hosting:test
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
