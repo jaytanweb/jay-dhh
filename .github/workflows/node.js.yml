@@ -10,8 +10,11 @@ jobs:
     name: 打包
     runs-on: ubuntu-latest
     steps:
-      - name: 拉取
+      - name: 搭建 node 环境
         uses: actions/checkout@master
+        with:
+          node-version: '14'
+
       - name: 安装依赖
         run: npm install
 
@@ -28,18 +31,20 @@ jobs:
         with:
           name: dist
           path: dist
+
   deploy:
     name: 部署
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: 拉取
+      - name: 拉取仓库
         uses: actions/checkout@master
       - name: 下载打包文件
         uses: actions/download-artifact@master
         with:
           name: dist
           path: dist
+
       - name: Firebase 部署正式服
         if: github.ref == 'refs/heads/master'
         uses: w9jds/firebase-action@master
