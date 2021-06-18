@@ -31,6 +31,23 @@ jobs:
         with:
           name: dist
           path: dist
+      - name: 打包失败推送
+        if: ${{ failure() }}
+        uses: ghostoy/dingtalk-action@master
+        with:
+          webhook: ${{ secrets.DINGTALK_WEBHOOK }}
+          secret: ${{ secrets.DINGTALK_SECRET }}
+          msgtype: 'actionCard'
+          content: |
+            {
+              "title": "打包失败",
+              "text": "打包失败",
+              "btnOrientation": "0",
+              "btns": [{
+                "title": "查看 action",
+                "actionURL": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+              }]
+            }
 
   deploy:
     name: 部署
@@ -60,3 +77,44 @@ jobs:
           args: deploy --only hosting:test
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
+          notice:
+    name: 通知
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: 正式服部署的推送
+        if: github.ref == 'refs/heads/master'
+        uses: ghostoy/dingtalk-action@master
+        with:
+          webhook: ${{ secrets.DINGTALK_WEBHOOK }}
+          secret: ${{ secrets.DINGTALK_SECRET }}
+          msgtype: 'actionCard'
+          content: |
+            {
+              "title": "正式服部署成功", 
+              "text": "![img](https://images.unsplash.com/photo-1504805572947-34fad45aed93?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60) \n\n仓库: [${{ github.repository }}](https://github.com/${{ github.repository }}) \n\n操作: ${{ github.actor }} 成功部署了正式服",
+              "btnOrientation": "0", 
+              "btns": [{
+                "title": "查看正式服", 
+                "actionURL": "https://jay-lab-1.web.app"
+              }]
+            }
+
+      - name: 测试服部署的推送
+        if: github.ref == 'refs/heads/test'
+        uses: ghostoy/dingtalk-action@master
+        with:
+          webhook: ${{ secrets.DINGTALK_WEBHOOK }}
+          secret: ${{ secrets.DINGTALK_SECRET }}
+          msgtype: 'actionCard'
+          content: |
+            {
+              "title": "测试服成功部署", 
+              "text": "![img](https://images.unsplash.com/photo-1504805572947-34fad45aed93?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60) \n\n仓库: [${{ github.repository }}](https://github.com/${{ github.repository }}) \n\n操作: ${{ github.actor }} 成功部署了测试服",
+              "btnOrientation": "0", 
+              "btns": [{
+                "title": "查看测试服", 
+                "actionURL": "https://jay-lab-1-test.web.app"
+              }]
+            }
