@@ -78,7 +78,7 @@ jobs:
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
 
-          notice:
+  notice:
     name: 通知
     needs: deploy
     runs-on: ubuntu-latest
