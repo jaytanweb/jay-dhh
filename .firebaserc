@@ -1,12 +1,16 @@
 {
-  "projects": {
-    "default": "jay-lab-1",
-  },
   "targets": {
     "jay-lab-1": {
       "hosting": {
-        "master": "jay-lab-1",
-        "test": "jay-lab-1-test",
+        "dev": [
+          "jay-lab-1-dev"
+        ],
+        "test": [
+          "jay-lab-1-test"
+        ],
+        "master": [
+          "jay-lab-1"
+        ]
       }
     }
   }
