@@ -1,6 +1,6 @@
 // const path = require('path');
 module.exports = {
-  title: '女神联盟',
+  title: 'dev',
 
   favicon: 'favicon.png',
   description: 'desc',
